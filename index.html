@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="entry-screen">
+    <h1>Join Chat Room</h1>
+    <input type="text" id="username" placeholder="Your Name">
+    <input type="text" id="room" placeholder="Room Code">
+    <button onclick="joinRoom()">Join</button>
+    <button onclick="createRoom()">Create Room</button>
+  </div>
+
+  <div id="chat-screen" style="display: none;">
+    <div class="header">
+      <span id="room-id"></span>
+      <button onclick="exitRoom()">Exit</button>
+    </div>
+    <div id="online-users"></div>
+    <div id="messages"></div>
+    <div class="input-box">
+      <input type="text" id="messageInput" placeholder="Type a message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
