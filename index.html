@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lipishree Unicode Rich Text Editor</title>
+<style>
+  /* 🔤 Add Unicode Fonts */
+  @font-face {
+    font-family: 'LipishreeUnicode';
+    src: url('https://raw.githubusercontent.com/codegear-2011/Chatter-box-/main/Lipishree%20Unicode.ttf');
+  }
+
+  @font-face {
+    font-family: 'RajonShoilyUnicode';
+    src: url('https://raw.githubusercontent.com/codegear-2011/Chatter-box-/main/Rajon_Shoily%20UNICODE.ttf');
+  }
+
+  @font-face {
+    font-family: 'MainakBuniadi';
+    src: url('https://raw.githubusercontent.com/codegear-2011/Chatter-box-/main/Li%20Mainak%20Buniyadi%20Unicode%20Italic.ttf');
+  }
+
+  body {
+    background: #222;
+    color: white;
+    font-family: 'LipishreeUnicode', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .editor-container {
+    width: 500px;
+    background: #2b2b2b;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .toolbar button, .toolbar select {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .toolbar button:hover, .toolbar select:hover {
+    background: #444;
+  }
+
+  .slider-group {
+    margin: 10px 0;
+  }
+
+  .slider-group label {
+    font-size: 14px;
+    margin-right: 8px;
+  }
+
+  .slider-group input[type=range] {
+    width: 100%;
+  }
+
+  .text-editor {
+    min-height: 200px;
+    background: #111;
+    color: white;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    outline: none;
+    font-family: 'LipishreeUnicode', Arial, sans-serif;
+  }
+</style>
+</head>
+<body>
+  <div class="editor-container">
+    <div class="toolbar">
+      <!-- 🔤 Font Selector -->
+      <select id="fontSelector" onchange="changeFont(this.value)">
+        <option value="'LipishreeUnicode', Arial">Lipishree Unicode</option>
+        <option value="'RajonShoilyUnicode', Arial">Rajon Shoily Unicode</option>
+        <option value="'MainakBuniadi', Arial">Mainak Buniadi Unicode</option>
+        <option value="'Courier New', monospace">Courier New</option>
+        <option value="Arial, sans-serif">Arial</option>
+      </select>
+
+      <button onclick="execCmd('bold')"><b>B</b></button>
+      <button onclick="execCmd('italic')"><i>I</i></button>
+      <button onclick="execCmd('underline')"><u>U</u></button>
+      <button onclick="execCmd('insertUnorderedList')">&#8226;</button>
+      <button onclick="execCmd('insertOrderedList')">1.</button>
+      <input type="color" id="colorPicker" title="Font Color" onchange="changeColor(this.value)">
+      <button onclick="downloadText()">💾 Save</button>
+      <button onclick="copyText()">📋 Copy</button>
+      <button onclick="clearText()">🧹 Clear</button>
+    </div>
+
+    <div class="slider-group">
+      <label for="fontSize">Tᴛ Font Size</label>
+      <input type="range" id="fontSize" min="10" max="50" value="18" oninput="updateStyle()">
+    </div>
+
+    <div class="slider-group">
+      <label for="lineHeight">⇅ Line Height</label>
+      <input type="range" id="lineHeight" min="0" max="30" value="0" oninput="updateStyle()">
+    </div>
+
+    <div class="slider-group">
+      <label for="letterSpacing">Aa Letter Spacing</label>
+      <input type="range" id="letterSpacing" min="0" max="10" value="0" oninput="updateStyle()">
+    </div>
+
+    <div id="editor" class="text-editor" contenteditable="true">
+      <p>Type here in Lipishree Unicode font...</p>
+    </div>
+  </div>
+
+<script>
+  const editor = document.getElementById("editor");
+
+  function execCmd(command) {
+    document.execCommand(command, false, null);
+  }
+
+  function changeColor(color) {
+    document.execCommand('foreColor', false, color);
+  }
+
+  function updateStyle() {
+    const size = document.getElementById("fontSize").value;
+    const line = document.getElementById("lineHeight").value;
+    const space = document.getElementById("letterSpacing").value;
+
+    editor.style.fontSize = size + "px";
+    editor.style.lineHeight = (1 + line/10);
+    editor.style.letterSpacing = space + "px";
+  }
+
+  function changeFont(fontValue) {
+    editor.style.fontFamily = fontValue;
+  }
+
+  function downloadText() {
+    const blob = new Blob([editor.innerHTML], { type: 'text/html' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'LipishreeText.html';
+    link.click();
+  }
+
+  function copyText() {
+    navigator.clipboard.writeText(editor.innerText);
+    alert("Copied to clipboard!");
+  }
+
+  function clearText() {
+    editor.innerHTML = '';
+  }
+</script>
+</body>
+</html>
